@@ -1,0 +1,425 @@
+/* html {
+    height: 100%;
+} */
+
+body {
+    background-image: url(images/bg1.JPG);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* height: 100%; */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+i {
+    cursor: pointer;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main button {
+    background: none;
+    cursor: pointer;
+    border: none;
+}
+
+
+/* .Docare_App {
+    height: 100%;
+} */
+
+.app {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    position: absolute;
+    color: rgb(100, 100, 100);
+    box-shadow: 5px 5px 5px rgba(105, 105, 105, 0.5);
+    display: flex;
+    width: 1100px;
+    height: 850px;
+    border-radius: 20px 20px;
+    overflow: hidden;
+}
+
+
+/* ___NAV___ */
+
+nav {
+    padding: 15px;
+    width: 20%;
+    height: 100%;
+    background-color: rgb(42, 80, 231);
+    color: white;
+}
+
+
+/* _header_ */
+
+.nav_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.logo img {
+    margin-right: 5px;
+}
+
+
+/* _nav_menu_ */
+
+.nav_menu {
+    font-size: 12px;
+}
+
+.nav_menu p {
+    margin-top: 35px;
+}
+
+.nav_menu li i {
+    padding-right: 5px;
+}
+
+.nav_menu button {
+    color: white;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    border: none;
+}
+
+
+/* _bild_ */
+
+.bild {
+    margin-top: 35px;
+    background-color: rgb(41, 105, 224);
+    border-radius: 10px 10px;
+    height: 240px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bild .bild_content {
+    text-align: center;
+}
+
+.bild img {
+    margin-bottom: 10px;
+}
+
+.bild_content .download {
+    margin-top: 20px;
+    width: 120px;
+    height: 30px;
+    border-radius: 5px 5px;
+    cursor: pointer;
+    border: none;
+    color: blue;
+}
+
+
+/* ___MAIN__ */
+
+.main {
+    width: 80%;
+    background-color: rgb(248, 250, 253);
+    height: 100%;
+}
+
+
+/* ___TOP__ */
+
+.top_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: white;
+    padding: 15px;
+}
+
+.contact_info {
+    display: flex;
+    align-items: center;
+}
+
+.contact_info>.logged_in {
+    display: none;
+}
+
+.contact_info.isloggedin>.logged_in {
+    display: flex;
+}
+
+.contact_info.isloggedin>.logged_out {
+    display: none;
+}
+
+.logged_in,
+.logged_out {
+    padding-left: 5px;
+    display: flex;
+}
+
+.contact_photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: 0 10px 0 10px;
+}
+
+.contact_photo img {
+    width: 50px;
+}
+
+.hello>span {
+    color: black;
+}
+
+
+/* ____PAGE_HEADER_ */
+
+.page_header {
+    padding: 15px;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page_header button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgb(222, 222, 222);
+}
+
+.left-radius {
+    border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;
+}
+
+.right-radius {
+    border-top-right-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+}
+
+.page_info,
+.patients {
+    display: flex;
+    align-items: center;
+}
+
+.patients div {
+    margin-right: 20px;
+    color: rgb(49, 49, 49);
+    font-weight: bold;
+}
+
+.page_info div {
+    margin: 0 10px 0 10px;
+}
+
+.page_info>button {
+    margin: 5px;
+}
+
+
+/* __CONTAINER__ */
+
+.container {
+    box-shadow: 0 0 10px rgba(105, 105, 105, 0.5);
+    border-radius: 10px 10px;
+    background-color: rgb(255, 255, 255);
+    margin: 0 20px 0 20px;
+}
+
+.container_header {
+    padding: 15px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left_group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left_group>button {
+    border: 1px solid rgb(222, 222, 222);
+    width: 30px;
+    height: 30px;
+    border-radius: 5px 5px;
+}
+
+.left_group>.search {
+    position: relative;
+    height: 30px;
+    width: 200px;
+    background: rgb(191, 208, 247);
+    border-radius: 5px 5px;
+    /* padding-left: 20px;
+    width: fit-content;
+
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+.left_group>.search>button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: none;
+}
+
+.left_group>.search>input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding-left: 30px;
+    border: none;
+    background: none;
+}
+
+.sort {
+    padding-left: 20px;
+}
+
+.container .add_btn,
+.container .del_btn {
+    background-color: blue;
+    color: white;
+    height: 35px;
+    width: 130px;
+    border-radius: 5px 5px;
+}
+
+.container .del_btn {
+    background-color: rgb(143, 12, 12);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.content th,
+td {
+    font-size: 12px;
+    padding: 12px;
+    border-top: 1px solid rgb(222, 222, 222);
+    text-align: left;
+}
+
+
+/* buttons_____ */
+
+.container-header button {
+    border: 1px solid grey;
+    border-radius: 3px 3px;
+    background-color: white;
+}
+
+.top_header button {
+    color: rgb(100, 100, 100);
+    width: 30px;
+    height: 30px;
+    border-radius: 5px 5px;
+    border: 1px solid rgb(222, 222, 222);
+    background-color: white;
+}
+
+.add_patient,
+.log_doctor,
+.reg_doctor {
+    position: absolute;
+    background-color: rgb(58, 55, 55);
+    width: 300px;
+    height: 350px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.patient_container,
+.login_container,
+.register_container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: none;
+}
+
+.patient_container.active,
+.login_container.active,
+.register_container.active {
+    display: block;
+}
+
+.patient_container .fon,
+.login_container .fon,
+.register_container .fon {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.add_patient input,
+.log_doctor input,
+.reg_doctor input {
+    height: 30px;
+}
+
+.add_patient th,
+.log_doctor th,
+.reg_doctor th {
+    padding-top: 5px;
+}
+
+.error {
+    color: red;
+    display: none;
+}
+
+.error.active {
+    display: initial;
+}
+
+
+/* btn color{
+    background-color: rgb(233, 239, 253);
+} */
