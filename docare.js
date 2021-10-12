@@ -95,59 +95,49 @@ right.addEventListener('click', () => {
     goToPage(currentpage)
     cur_page.innerHTML = currentpage + 1
 })
-const getNumpeople = (cb) => {
-    fetch('num').then((res) => res.json()).then((obj) => {
+const getNumpeople = () => {
+    return fetch('num').then((res) => res.json()).then((obj) => {
         const quantity = document.querySelector('.quantity span')
         const pages = document.querySelector('.of_pages span')
         quantity.innerHTML = obj.numPatient
         numPages = Math.ceil(obj.numPatient / 10)
         pages.innerHTML = numPages
-        if (cb !== undefined) {
-            cb()
-        }
     })
 }
-const goToPage = (pageIndex, cb) => {
+const goToPage = (pageIndex) => {
     const from = pageIndex * 10
     const to = from + 10
-    fetch(`/getpeople?from=${from}&to=${to}&search=${encodeURI(searchInput.value)}&sort=${encodeURI(sortByValue)}&order=${sortByOrder}`)
+    return fetch(`/getpeople?from=${from}&to=${to}&search=${encodeURI(searchInput.value)}&sort=${encodeURI(sortByValue)}&order=${sortByOrder}`)
         .then((res) => res.json())
         .then((people) => {
             patients = people
 
             renderTable(people)
-            if (cb !== undefined) {
-                cb()
-            }
+
         })
 }
-const getloginstatus = (cb) => {
-    fetch('/getlogin').then((res) => res.json()).then((login) => {
+const getloginstatus = () => {
+    return fetch('/getlogin').then((res) => res.json()).then((login) => {
 
         if (login.id !== undefined) {
             contactinfo.classList.add('isloggedin')
             username.innerHTML = login.name
         }
-        if (cb !== undefined) {
-            cb()
-        }
     })
 }
-getloginstatus(() => {
-    getNumpeople(() => {
-        goToPage(currentpage)
-    })
-})
+getloginstatus()
+    .then(() => getNumpeople())
+    .then(() => goToPage(currentpage))
+
 
 logout.addEventListener('click', () => {
-    fetch('logout').then(() => {
-        patients = []
-        contactinfo.classList.remove('isloggedin')
-        getNumpeople(() => {
-            goToPage(currentpage)
+    fetch('logout')
+        .then(() => {
+            patients = []
+            contactinfo.classList.remove('isloggedin')
         })
-    })
-
+        .then(() => getNumpeople())
+        .then(() => goToPage(currentpage))
 })
 
 login.addEventListener('click', () => {
@@ -175,11 +165,8 @@ delPatient.addEventListener('click', () => {
             method: 'Post',
             body: JSON.stringify(patientIds)
         })
-        .then((res) => {
-            getNumpeople(() => {
-                goToPage(currentpage)
-            })
-        })
+        .then(() => getNumpeople())
+        .then(() => goToPage(currentpage))
 })
 
 addBtn.addEventListener('click', () => {
@@ -248,29 +235,30 @@ saveloginbtn.addEventListener('click', () => {
         password: passinput.value
     }
     fetch('login', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify(obj)
-    }).then((res) => res.json()).then((result) => {
-        const er = document.querySelector('.login_container .error')
-        if (result.error !== undefined) {
-            er.classList.add('active')
-            er.innerText = result.error
-            return
-        }
-        logcontainer.classList.remove('active')
-        contactinfo.classList.add('isloggedin')
-
-        username.innerHTML = result.name
-        mailInput.value = ''
-        passinput.value = ''
-        er.classList.remove('active')
-        getNumpeople(() => {
-            goToPage(currentpage)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(obj)
         })
-    })
+        .then((res) => res.json())
+        .then((result) => {
+            const er = document.querySelector('.login_container .error')
+            if (result.error !== undefined) {
+                er.classList.add('active')
+                er.innerText = result.error
+                return
+            }
+            logcontainer.classList.remove('active')
+            contactinfo.classList.add('isloggedin')
+
+            username.innerHTML = result.name
+            mailInput.value = ''
+            passinput.value = ''
+            er.classList.remove('active')
+        })
+        .then(() => getNumpeople())
+        .then(() => goToPage(currentpage))
 })
 savereg.addEventListener('click', () => {
 
@@ -324,14 +312,12 @@ save.addEventListener('click', () => {
     })
 
     fetch('addpatient', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify(obj)
-    }).then(() => {
-        getNumpeople(() => {
-            goToPage(currentpage)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(obj)
         })
-    })
+        .then(() => getNumpeople())
+        .then(() => goToPage(currentpage))
 })
