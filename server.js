@@ -11,13 +11,20 @@ const getQueryParams = (url) => {
     return url.split('?')[1]
 }
 
-const getRequestBody = (req, cb) => {
-    let content = ''
-    req
-        .on('data', (chunk) => {
-            content += chunk
-        })
-        .on('end', () => cb(JSON.parse(content)))
+const getRequestBody = (req) => {
+    return new Promise((resolve, reject) => {
+        let content = ''
+        req
+            .on('data', (chunk) => {
+                content += chunk
+            })
+            .on('end', () => {
+                resolve(JSON.parse(content))
+            })
+            .on('error', (error) => {
+                reject(error)
+            })
+    })
 }
 
 const server = http.createServer((req, res) => {
@@ -45,7 +52,7 @@ const server = http.createServer((req, res) => {
         return
     }
     if (req.url === '/login') { //find doc
-        getRequestBody(req, (reqJsonObj) => {
+        getRequestBody(req).then((reqJsonObj) => {
 
             const doc = doctors.findDoc(reqJsonObj.email, reqJsonObj.password)
             if (doc !== null) {
@@ -64,7 +71,7 @@ const server = http.createServer((req, res) => {
         return
     }
     if (req.url === '/register') {
-        getRequestBody(req, (reqJsonObj) => {
+        getRequestBody(req).then((reqJsonObj) => {
 
             const newdoc = doctors.addDoctor(reqJsonObj.email)
             if (newdoc !== null) {
@@ -138,7 +145,7 @@ const server = http.createServer((req, res) => {
         if (sessions.isSessionValid(sessionId)) {
 
 
-            getRequestBody(req, (reqJsonObj) => {
+            getRequestBody(req).then((reqJsonObj) => {
 
                 const docId = sessions.getDocId(sessionId)
                 patients.addPatient(docId, reqJsonObj)
@@ -155,7 +162,7 @@ const server = http.createServer((req, res) => {
         const sessionId = cookies.getSessionId(req)
         if (sessions.isSessionValid(sessionId)) {
 
-            getRequestBody(req, (ids) => {
+            getRequestBody(req).then((ids) => {
 
                 const doctorId = sessions.getDocId(sessionId)
                 patients.deletePatient(doctorId, ids)
@@ -173,11 +180,17 @@ const server = http.createServer((req, res) => {
     console.log(req.url)
     const fileName = ext.getFileName(req.url)
     const type = ext.getType(fileName)
-    fs.readFile(fileName, (err, data) => {
-        if (err !== null) {
-            console.log(err)
-            return
-        }
+    const readFile = (fileName) => new Promise((resolve, reject) => {
+        fs.readFile(fileName, (err, data) => {
+            if (err !== null) {
+                reject(err)
+                console.log(err)
+                return
+            }
+            resolve(data)
+        })
+    })
+    readFile(fileName).then((data) => {
         res.setHeader('Content-Type', type)
         res.end(data)
     })
