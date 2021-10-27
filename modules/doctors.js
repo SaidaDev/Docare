@@ -1,8 +1,7 @@
-const fs = require('fs')
-const util = require("./utilites")
+import fs from 'fs'
+import { getRandomString } from "./utilites"
 
 let doctors = []
-
 const saveDoctors = () => {
     fs.writeFileSync('doctors.json', JSON.stringify(doctors, null, 2))
 }
@@ -11,9 +10,7 @@ const loadDoctors = () => {
     doctors = JSON.parse(fs.readFileSync('doctors.json'))
 }
 loadDoctors()
-
-
-const getDocById = (docId) => {
+export const getDocById = (docId) => {
     for (let i = 0; i < doctors.length; i++) {
         if (doctors[i].id === docId) {
             return doctors[i]
@@ -22,8 +19,7 @@ const getDocById = (docId) => {
     }
     return null
 }
-
-const findDoc = (email, pass) => {
+export const findDoc = (email, pass) => {
     for (let i = 0; i < doctors.length; i++) {
 
         if (doctors[i].email === email && doctors[i].password === pass) {
@@ -42,18 +38,17 @@ const doesEmailExists = (email) => {
         if (doctors[i].email === email) {
             return true
         }
-
     }
     return false
 }
 
-const addDoctor = (email, password, name) => {
+export const addDoctor = (email, password, name) => {
     if (doesEmailExists(email)) {
         return null
     }
 
     const newdoc = {
-        id: util.getRandomString(),
+        id: getRandomString(),
         name: name,
         email: email,
         image: 'images/GYVC2191.JPG',
@@ -67,6 +62,3 @@ const addDoctor = (email, password, name) => {
         image: newdoc.image
     }
 }
-exports.findDoc = findDoc
-exports.addDoctor = addDoctor
-exports.getDocById = getDocById

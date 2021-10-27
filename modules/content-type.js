@@ -1,4 +1,4 @@
-const baza = {
+export const extensions = {
     js: 'aplication/javascript',
     json: 'text/json',
     css: 'text/css',
@@ -12,7 +12,7 @@ const baza = {
     svg: 'image/svg+xml',
 }
 
-const getFileName = (url) => {
+export const getFileName = (url) => {
     if (url === '/') {
         return 'Docare.html'
     }
@@ -25,10 +25,7 @@ const getExt = (fileName) => {
     return fileMass[fileMass.length - 1]
 }
 
-const getType = (fileName) => {
+export const getType = (fileName) => {
     const ext = getExt(fileName)
-    return baza[ext]
+    return extensions[ext]
 }
-exports.extensions = baza
-exports.getType = getType
-exports.getFileName = getFileName

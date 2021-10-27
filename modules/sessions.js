@@ -1,6 +1,5 @@
-const fs = require('fs')
-const util = require('./utilites')
-
+import fs from 'fs'
+import { getRandomString } from "./utilites"
 let sessions = {}
 
 const saveSessions = () => {
@@ -12,25 +11,24 @@ const loadSessions = () => {
 }
 loadSessions()
 
-const isSessionValid = (sessionId) => {
+export const isSessionValid = (sessionId) => {
     return sessions[sessionId] !== undefined
 }
 
-const closeSession = (sessionId) => {
+export const closeSession = (sessionId) => {
     if (isSessionValid(sessionId)) {
         delete sessions[sessionId]
         saveSessions()
     }
 }
-const getDocId = (sessionId) => {
+export const getDocId = (sessionId) => {
     const sessionobj = sessions[sessionId]
     const docId = sessionobj.id
     return docId
 }
 
-
-const openSession = (docId) => {
-    const randomNum = util.getRandomString()
+export const openSession = (docId) => {
+    const randomNum = getRandomString()
     sessions[randomNum] = {
         id: docId,
     }
@@ -38,8 +36,3 @@ const openSession = (docId) => {
     saveSessions()
     return randomNum
 }
-
-exports.isSessionValid = isSessionValid
-exports.closeSession = closeSession
-exports.getDocId = getDocId
-exports.openSession = openSession
