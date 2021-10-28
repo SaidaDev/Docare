@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        main: path.resolve('./server.js'),
+        server: path.resolve('./server.js'),
     },
     output: {
         path: path.resolve('./dist'),
