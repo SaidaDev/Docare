@@ -1,22 +1,19 @@
-const fs = require('fs')
-const util = require("./utilites")
-
+import fs from 'fs'
+import { getRandomString } from "./utilites"
 let patients = []
 
-const savepatiens = () => {
+const savePatients = () => {
     fs.writeFileSync('patients.json', JSON.stringify(patients, null, 2))
 }
-
-const loadpatiens = () => {
+const loadPatients = () => {
     patients = JSON.parse(fs.readFileSync('patients.json'))
 }
-loadpatiens()
-const getNumPatiens = (docId) => {
+loadPatients()
+export const getNumPatients = (docId) => {
     return patients
         .filter((patient) => docId === patient.doctorId).length
 }
-
-const getPatients = (docId, search, sortBy, sortByOrder, from, to) => {
+export const getPatients = (docId, search, sortBy, sortByOrder, from, to) => {
 
     let mass = patients
         .filter((patient) => docId === patient.doctorId)
@@ -46,9 +43,9 @@ const getPatients = (docId, search, sortBy, sortByOrder, from, to) => {
 
 
 }
-const addPatient = (docId, p) => {
+export const addPatient = (docId, p) => {
     const newPatient = {
-        id: util.getRandomString(),
+        id: getRandomString(),
         doctorId: docId,
         image: "images/GYVC2191.JPG",
         name: p.name,
@@ -60,11 +57,10 @@ const addPatient = (docId, p) => {
         phone: p.phone,
     }
     patients.unshift(newPatient)
-    savepatiens()
+    savePatients()
 
 }
-
-const deletePatient = (docId, patientIds) => {
+export const deletePatient = (docId, patientIds) => {
 
     patients = patients.filter((patient) => {
         for (let i = 0; i < patientIds.length; i++) {
@@ -77,7 +73,3 @@ const deletePatient = (docId, patientIds) => {
 
 
 }
-exports.deletePatient = deletePatient
-exports.addPatient = addPatient
-exports.getPatients = getPatients
-exports.getNumPatiens = getNumPatiens
