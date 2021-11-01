@@ -95,49 +95,47 @@ right.addEventListener('click', () => {
     goToPage(currentpage)
     cur_page.innerHTML = currentpage + 1
 })
-const getNumpeople = () => {
-    return fetch('num').then((res) => res.json()).then((obj) => {
-        const quantity = document.querySelector('.quantity span')
-        const pages = document.querySelector('.of_pages span')
-        quantity.innerHTML = obj.numPatient
-        numPages = Math.ceil(obj.numPatient / 10)
-        pages.innerHTML = numPages
-    })
+const getNumpeople = async () => {
+    const res = await fetch('num')
+    const obj = await res.json()
+
+    const quantity = document.querySelector('.quantity span')
+    const pages = document.querySelector('.of_pages span')
+    quantity.innerHTML = obj.numPatient
+    numPages = Math.ceil(obj.numPatient / 10)
+    pages.innerHTML = numPages
+
 }
-const goToPage = (pageIndex) => {
+const goToPage = async (pageIndex) => {
     const from = pageIndex * 10
     const to = from + 10
-    return fetch(`/getpeople?from=${from}&to=${to}&search=${encodeURI(searchInput.value)}&sort=${encodeURI(sortByValue)}&order=${sortByOrder}`)
-        .then((res) => res.json())
-        .then((people) => {
-            patients = people
 
-            renderTable(people)
-
-        })
+    const res = await fetch(`/getpeople?from=${from}&to=${to}&search=${encodeURI(searchInput.value)}&sort=${encodeURI(sortByValue)}&order=${sortByOrder}`)
+    const people = await res.json()
+    patients = people
+    renderTable(people)
 }
-const getloginstatus = () => {
-    return fetch('/getlogin').then((res) => res.json()).then((login) => {
-
-        if (login.id !== undefined) {
-            contactinfo.classList.add('isloggedin')
-            username.innerHTML = login.name
-        }
-    })
+const getloginstatus = async () => {
+    const res = await fetch('/getlogin')
+    const login = await res.json()
+    if (login.id !== undefined) {
+        contactinfo.classList.add('isloggedin')
+        username.innerHTML = login.name
+    }
 }
-getloginstatus()
-    .then(() => getNumpeople())
-    .then(() => goToPage(currentpage))
+(async () => {
+    await getloginstatus()
+    await getNumpeople()
+    await goToPage(currentpage)
+})()
 
+logout.addEventListener('click', async () => {
+    await fetch('logout')
+    patients = []
 
-logout.addEventListener('click', () => {
-    fetch('logout')
-        .then(() => {
-            patients = []
-            contactinfo.classList.remove('isloggedin')
-        })
-        .then(() => getNumpeople())
-        .then(() => goToPage(currentpage))
+    contactinfo.classList.remove('isloggedin')
+    await getNumpeople()
+    await goToPage(currentpage)
 })
 
 login.addEventListener('click', () => {
@@ -146,7 +144,7 @@ login.addEventListener('click', () => {
 register.addEventListener('click', () => {
     regcontainer.classList.add('active')
 })
-delPatient.addEventListener('click', () => {
+delPatient.addEventListener('click', async () => {
     const checkBoxes = document.querySelectorAll('.check input[type="checkbox"]')
     patientIds = []
     for (let i = 0; i < checkBoxes.length; i++) {
@@ -158,15 +156,15 @@ delPatient.addEventListener('click', () => {
     if (patientIds.length === 0) {
         return
     }
-    fetch('delete', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'Post',
-            body: JSON.stringify(patientIds)
-        })
-        .then(() => getNumpeople())
-        .then(() => goToPage(currentpage))
+    await fetch('delete', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'Post',
+        body: JSON.stringify(patientIds)
+    })
+    await getNumpeople()
+    await goToPage(currentpage)
 })
 
 addBtn.addEventListener('click', () => {
@@ -227,40 +225,40 @@ sortByTreatment.addEventListener('click', () => {
     sortByValue = 'treatment'
     goToPage(currentpage)
 })
-saveloginbtn.addEventListener('click', () => {
+saveloginbtn.addEventListener('click', async () => {
     const mailInput = document.querySelector('.log_doctor input[data-key="email"]')
     const passinput = document.querySelector('.log_doctor input[data-key="password"]')
     const obj = {
         email: mailInput.value,
         password: passinput.value
     }
-    fetch('login', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(obj)
-        })
-        .then((res) => res.json())
-        .then((result) => {
-            const er = document.querySelector('.login_container .error')
-            if (result.error !== undefined) {
-                er.classList.add('active')
-                er.innerText = result.error
-                return
-            }
-            logcontainer.classList.remove('active')
-            contactinfo.classList.add('isloggedin')
+    const res = await fetch('login', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    const result = await res.json()
 
-            username.innerHTML = result.name
-            mailInput.value = ''
-            passinput.value = ''
-            er.classList.remove('active')
-        })
-        .then(() => getNumpeople())
-        .then(() => goToPage(currentpage))
+    const er = document.querySelector('.login_container .error')
+    if (result.error !== undefined) {
+        er.classList.add('active')
+        er.innerText = result.error
+        return
+    }
+    logcontainer.classList.remove('active')
+    contactinfo.classList.add('isloggedin')
+
+    username.innerHTML = result.name
+    mailInput.value = ''
+    passinput.value = ''
+    er.classList.remove('active')
+
+    await getNumpeople()
+    await goToPage(currentpage)
 })
-savereg.addEventListener('click', () => {
+savereg.addEventListener('click', async () => {
 
     const mailInput = document.querySelector('.reg_doctor input[data-key="email"]')
     const passinput = document.querySelector('.reg_doctor input[data-key="password"]')
@@ -271,32 +269,33 @@ savereg.addEventListener('click', () => {
         password: passinput.value,
         name: nameinput.value
     }
-    fetch('register', {
+    const res = await fetch('register', {
         headers: {
             'Content-Type': 'application/json'
         },
         method: "POST",
         body: JSON.stringify(obj)
-    }).then((res) => res.json()).then((result) => {
-        const er = document.querySelector('.register_container .error')
-
-        if (result.error !== undefined) {
-            er.classList.add('active')
-            er.innerText = result.error
-            return
-        }
-        regcontainer.classList.remove('active')
-        contactinfo.classList.add('isloggedin')
-        username.innerHTML = result.name
-        mailInput.value = ''
-        passinput.value = ''
-        nameinput.value = ''
-        er.classList.remove('active')
     })
+    const result = await res.json()
+
+    const er = document.querySelector('.register_container .error')
+
+    if (result.error !== undefined) {
+        er.classList.add('active')
+        er.innerText = result.error
+        return
+    }
+    regcontainer.classList.remove('active')
+    contactinfo.classList.add('isloggedin')
+    username.innerHTML = result.name
+    mailInput.value = ''
+    passinput.value = ''
+    nameinput.value = ''
+    er.classList.remove('active')
+
 })
 
-
-save.addEventListener('click', () => {
+save.addEventListener('click', async () => {
     container.classList.remove('active')
     const inputs = Array.from(document.querySelectorAll('.add_patient input'))
     console.log(inputs)
@@ -311,13 +310,13 @@ save.addEventListener('click', () => {
         item.value = ''
     })
 
-    fetch('addpatient', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(obj)
-        })
-        .then(() => getNumpeople())
-        .then(() => goToPage(currentpage))
+    await fetch('addpatient', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    await getNumpeople()
+    await goToPage(currentpage)
 })
