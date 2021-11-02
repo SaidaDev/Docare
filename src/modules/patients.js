@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { getRandomString } from "./utilites"
+import { getRandomString } from "./utilities"
 let patients = []
 
 const savePatients = () => {

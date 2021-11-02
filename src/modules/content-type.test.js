@@ -18,11 +18,9 @@ describe("getType", () => {
     it("should return cssType", () => {
         expect(getType("style.css")).toBe("text/css")
     })
-
     it("should return jsonType", () => {
         expect(getType("package.json")).toBe("text/json")
     })
-
     it("should return image", () => {
         expect(getType("image.png")).toBe("image/png")
     })

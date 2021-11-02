@@ -11,6 +11,5 @@ export const getSessionId = (req) => {
 }
 export const setSessionId = (sessionId, res) => {
     res.setHeader('Set-Cookie', `Session=${sessionId}`)
-
 }
 
