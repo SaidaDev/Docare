@@ -2,23 +2,25 @@ import fs from 'fs'
 import { getRandomString } from "./utilities"
 
 let doctors = []
+
 const saveDoctors = () => {
     fs.writeFileSync('doctors.json', JSON.stringify(doctors, null, 2))
 }
-
-const loadDoctors = () => {
+export const createLoadDoctors = (fs) => () => {
     doctors = JSON.parse(fs.readFileSync('doctors.json'))
 }
-loadDoctors()
+
+export const loadDoctors = createLoadDoctors(fs)
+
 export const getDocById = (docId) => {
     for (let i = 0; i < doctors.length; i++) {
         if (doctors[i].id === docId) {
             return doctors[i]
-
         }
     }
     return null
 }
+
 export const findDoc = (email, pass) => {
     for (let i = 0; i < doctors.length; i++) {
 
@@ -41,12 +43,10 @@ const doesEmailExists = (email) => {
     }
     return false
 }
-
-export const addDoctor = (email, password, name) => {
+export const createAddDoctor = (getRandomString, saveDoctors) => (email, password, name) => {
     if (doesEmailExists(email)) {
         return null
     }
-
     const newdoc = {
         id: getRandomString(),
         name: name,
@@ -62,3 +62,4 @@ export const addDoctor = (email, password, name) => {
         image: newdoc.image
     }
 }
+export const addDoctor = createAddDoctor(getRandomString, saveDoctors)
