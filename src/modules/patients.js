@@ -5,10 +5,10 @@ let patients = []
 const savePatients = () => {
     fs.writeFileSync('patients.json', JSON.stringify(patients, null, 2))
 }
-const loadPatients = () => {
+export const createLoadPatients = (fs) => () => {
     patients = JSON.parse(fs.readFileSync('patients.json'))
 }
-loadPatients()
+export const loadPatients = createLoadPatients(fs)
 export const getNumPatients = (docId) => {
     return patients
         .filter((patient) => docId === patient.doctorId).length
@@ -40,10 +40,8 @@ export const getPatients = (docId, search, sortBy, sortByOrder, from, to) => {
         }
     }
     return mass.slice(from, to)
-
-
 }
-export const addPatient = (docId, p) => {
+export const createAddPatient = (getRandomString, savePatients) => (docId, p) => {
     const newPatient = {
         id: getRandomString(),
         doctorId: docId,
@@ -58,10 +56,10 @@ export const addPatient = (docId, p) => {
     }
     patients.unshift(newPatient)
     savePatients()
-
 }
-export const deletePatient = (docId, patientIds) => {
+export const addPatients = createAddPatient(getRandomString, savePatients)
 
+export const deletePatient = (docId, patientIds) => {
     patients = patients.filter((patient) => {
         for (let i = 0; i < patientIds.length; i++) {
             if (patient.id === patientIds[i] && patient.doctorId === docId) {
@@ -70,6 +68,4 @@ export const deletePatient = (docId, patientIds) => {
         }
         return true
     })
-
-
 }
