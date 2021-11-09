@@ -2,37 +2,40 @@ import fs from 'fs'
 import { getRandomString } from "./utilities"
 let sessions = {}
 
-const saveSessions = () => {
+const createSaveSessions = (fs) => () => {
     fs.writeFileSync('sessions.json', JSON.stringify(sessions, null, 2))
 }
 
-const loadSessions = () => {
+export const createLoadSession = (fs) => () => {
     sessions = JSON.parse(fs.readFileSync('sessions.json'))
 }
-loadSessions()
+
+export const loadSession = createLoadSession(fs)
 
 export const isSessionValid = (sessionId) => {
     return sessions[sessionId] !== undefined
 }
 
-export const closeSession = (sessionId) => {
+export const createCloseSession = (fs) => (sessionId) => {
     if (isSessionValid(sessionId)) {
         delete sessions[sessionId]
-        saveSessions()
+        createSaveSessions(fs)()
     }
 }
+export const closeSession = createCloseSession(fs)
+
 export const getDocId = (sessionId) => {
     const sessionobj = sessions[sessionId]
     const docId = sessionobj.id
     return docId
 }
 
-export const openSession = (docId) => {
+export const createOpenSession = (save, getRandomString) => (docId) => {
     const randomNum = getRandomString()
     sessions[randomNum] = {
         id: docId,
     }
-
-    saveSessions()
+    save()
     return randomNum
 }
+export const openSession = createOpenSession(createSaveSessions(fs), getRandomString)
