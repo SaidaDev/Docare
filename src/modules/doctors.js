@@ -6,11 +6,9 @@ let doctors = []
 const saveDoctors = () => {
     fs.writeFileSync('doctors.json', JSON.stringify(doctors, null, 2))
 }
-export const createLoadDoctors = (fs) => () => {
+export const loadDoctors = () => {
     doctors = JSON.parse(fs.readFileSync('doctors.json'))
 }
-
-export const loadDoctors = createLoadDoctors(fs)
 
 export const getDocById = (docId) => {
     for (let i = 0; i < doctors.length; i++) {
@@ -23,9 +21,7 @@ export const getDocById = (docId) => {
 
 export const findDoc = (email, pass) => {
     for (let i = 0; i < doctors.length; i++) {
-
         if (doctors[i].email === email && doctors[i].password === pass) {
-
             return {
                 id: doctors[i].id,
                 name: doctors[i].name,
@@ -35,6 +31,7 @@ export const findDoc = (email, pass) => {
     }
     return null
 }
+
 const doesEmailExists = (email) => {
     for (let i = 0; i < doctors.length; i++) {
         if (doctors[i].email === email) {
@@ -43,7 +40,7 @@ const doesEmailExists = (email) => {
     }
     return false
 }
-export const createAddDoctor = (getRandomString, saveDoctors) => (email, password, name) => {
+export const addDoctor = (email, password, name) => {
     if (doesEmailExists(email)) {
         return null
     }
@@ -62,4 +59,3 @@ export const createAddDoctor = (getRandomString, saveDoctors) => (email, passwor
         image: newdoc.image
     }
 }
-export const addDoctor = createAddDoctor(getRandomString, saveDoctors)
