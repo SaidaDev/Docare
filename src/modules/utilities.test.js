@@ -1,8 +1,18 @@
-import { createGetRandomString } from "./utilities";
+
+import { getRandomString } from "./utilities";
 
 describe("getRandomString", () => {
+    let random
+    beforeAll(() => {
+        random = jest.spyOn(global.Math, 'random')
+    });
+
+    afterAll(() => {
+        random.mockRestore();
+    })
     it("should return randomString", () => {
-        const getRandomString = createGetRandomString(() => 0.123456789)
+        random.mockReturnValue(0.123456789);
         expect(getRandomString()).toBe("12345")
+        expect(random).toHaveBeenCalledTimes(1)
     })
 })
