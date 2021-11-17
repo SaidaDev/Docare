@@ -3,7 +3,7 @@ import { isSessionValid, closeSession, getDocId, openSession } from './sessions'
 import { getDocById, addDoctor, findDoc } from './doctors'
 import { getSessionId, setSessionId } from './cookie'
 import { deletePatient, getNumPatients, getPatients } from './patients'
-import { getFileName, getType } from './content-type'
+import { extensions, getFileName, getType } from './content-type'
 
 const getQueryParams = (url) => {
     return url.split('?')[1]
@@ -22,7 +22,7 @@ const getRequestBody = (req) => new Promise((resolve, reject) => {
         })
 })
 const readFile = (fileName) => new Promise((resolve, reject) => {
-    fs.readFile(fileName, (err, data) => {
+    fs.readFile(fileName, "utf8", (err, data) => {
         if (err !== null) {
             reject(err)
             console.log(err)
@@ -31,16 +31,13 @@ const readFile = (fileName) => new Promise((resolve, reject) => {
         resolve(data)
     })
 })
-
-export const createRequestFile = (readFileMine) => async (req, res) => {
+export const requestFile = async (req, res) => {
     const fileName = getFileName(req.url)
     const type = getType(fileName)
-    const data = await readFileMine(fileName)
+    const data = await readFile(fileName)
     res.setHeader('Content-Type', type)
     res.end(data)
 }
-export const requestFile = createRequestFile(readFile)
-
 export const getLogin = (req, res) => {
     const sessionId = getSessionId(req)
     if (isSessionValid(sessionId)) {
@@ -48,7 +45,6 @@ export const getLogin = (req, res) => {
         const docInf = getDocById(docId)
         if (docInf !== null) {
             res.setHeader('Content-Type', extensions.json)
-
             res.end(JSON.stringify({
                 id: docInf.id,
                 name: docInf.name,
@@ -59,6 +55,7 @@ export const getLogin = (req, res) => {
         console.log('Cant find doctor')
         closeSession(sessionId)
     }
+    res.setHeader('Content-Type', extensions.json)
     res.end(JSON.stringify({}))
 }
 export const login = async (req, res) => {
@@ -76,7 +73,6 @@ export const login = async (req, res) => {
     res.end(JSON.stringify({
         error: 'Email or Password not correct'
     }))
-
 }
 export const register = async (req, res) => {
     const reqJsonObj = await getRequestBody(req)
