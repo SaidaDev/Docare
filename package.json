@@ -3,11 +3,15 @@
     "version": "0.0.0",
     "devDependencies": {
         "@babel/core": "^7.15.8",
+        "@babel/plugin-transform-runtime": "^7.16.0",
         "@babel/preset-env": "^7.15.8",
         "babel-loader": "^8.2.3",
         "jest": "^27.3.1",
         "mock-fs": "^5.1.2",
         "webpack": "^5.60.0",
         "webpack-cli": "^4.9.1"
+    },
+    "dependencies": {
+        "@babel/runtime-corejs3": "^7.16.3"
     }
 }
