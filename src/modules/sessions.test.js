@@ -1,4 +1,4 @@
-import { closeSession, createOpenSession, getDocId, isSessionValid, loadSession } from "./sessions";
+import { closeSession, getDocId, isSessionValid, loadSession, openSession } from "./sessions";
 import mock from "mock-fs"
 describe("session test", () => {
     beforeAll(() => {
@@ -26,12 +26,16 @@ describe("session test", () => {
         })
     })
     describe("openSession", () => {
+        beforeAll(() => {
+            jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+        })
+        afterAll(() => {
+            Math.random.mockRestore();
+        })
         it("should open session", () => {
-            const randomStr = () => "5570"
-            const openSession = createOpenSession(randomStr)
             openSession("0")
-            expect(isSessionValid("5570")).toBe(true)
-            expect(getDocId("5570")).toBe("0")
+            expect(isSessionValid("12345")).toBe(true)
+            expect(getDocId("12345")).toBe("0")
         })
     })
 

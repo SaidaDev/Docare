@@ -3,7 +3,7 @@ import { getRandomString } from "./utilities"
 let sessions = {}
 
 const saveSessions = () => {
-    fs.writeFileSync('sessions.json', JSON.stringify(sessions, null, 2))
+    fs.writeFileSync('sessions.json', JSON.stringify(sessions))
 }
 
 export const loadSession = () => {
@@ -27,7 +27,7 @@ export const getDocId = (sessionId) => {
     return docId
 }
 
-export const createOpenSession = (getRandomString) => (docId) => {
+export const openSession = (docId) => {
     const randomNum = getRandomString()
     sessions[randomNum] = {
         id: docId,
@@ -35,4 +35,3 @@ export const createOpenSession = (getRandomString) => (docId) => {
     saveSessions()
     return randomNum
 }
-export const openSession = createOpenSession(getRandomString)
