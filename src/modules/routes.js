@@ -1,8 +1,9 @@
 import fs from 'fs'
+import qs from "querystring"
 import { isSessionValid, closeSession, getDocId, openSession } from './sessions'
 import { getDocById, addDoctor, findDoc } from './doctors'
 import { getSessionId, setSessionId } from './cookie'
-import { deletePatient, getNumPatients, getPatients } from './patients'
+import { addPatient, deletePatient, getNumPatients, getPatients } from './patients'
 import { extensions, getFileName, getType } from './content-type'
 
 const getQueryParams = (url) => {
@@ -52,12 +53,13 @@ export const getLogin = (req, res) => {
             }))
             return
         }
-        console.log('Cant find doctor')
+
         closeSession(sessionId)
     }
     res.setHeader('Content-Type', extensions.json)
     res.end(JSON.stringify({}))
 }
+
 export const login = async (req, res) => {
     const reqJsonObj = await getRequestBody(req)
     const doc = findDoc(reqJsonObj.email, reqJsonObj.password)
@@ -76,7 +78,7 @@ export const login = async (req, res) => {
 }
 export const register = async (req, res) => {
     const reqJsonObj = await getRequestBody(req)
-    const newdoc = addDoctor(reqJsonObj.email)
+    const newdoc = addDoctor(reqJsonObj.email, reqJsonObj.password, reqJsonObj.name)
     if (newdoc !== null) {
         const sessionId = openSession(newdoc.id)
         setSessionId(sessionId, res)
@@ -126,7 +128,6 @@ export const getPeople = (req, res) => {
     }
     res.setHeader('Content-Type', extensions.json)
     res.end(JSON.stringify([]))
-
 }
 export const requestAddPatient = async (req, res) => {
     const sessionId = getSessionId(req)
