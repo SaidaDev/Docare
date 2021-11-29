@@ -1,5 +1,5 @@
 export const extensions = {
-    js: 'aplication/javascript',
+    js: 'application/javascript',
     json: 'text/json',
     css: 'text/css',
     html: 'text/html',

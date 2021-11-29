@@ -1,15 +1,14 @@
 import fs from 'fs'
-import { getRandomString } from "./utilites"
+import { getRandomString } from "./utilities"
 let sessions = {}
 
 const saveSessions = () => {
-    fs.writeFileSync('sessions.json', JSON.stringify(sessions, null, 2))
+    fs.writeFileSync('sessions.json', JSON.stringify(sessions))
 }
 
-const loadSessions = () => {
+export const loadSession = () => {
     sessions = JSON.parse(fs.readFileSync('sessions.json'))
 }
-loadSessions()
 
 export const isSessionValid = (sessionId) => {
     return sessions[sessionId] !== undefined
@@ -21,6 +20,7 @@ export const closeSession = (sessionId) => {
         saveSessions()
     }
 }
+
 export const getDocId = (sessionId) => {
     const sessionobj = sessions[sessionId]
     const docId = sessionobj.id
@@ -32,7 +32,6 @@ export const openSession = (docId) => {
     sessions[randomNum] = {
         id: docId,
     }
-
     saveSessions()
     return randomNum
 }
