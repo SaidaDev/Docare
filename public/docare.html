@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="docare.css" />
+  </head>
+
+  <body>
+    <template id="table_template">
+      <tr>
+        <td class="check"><input type="checkbox" /></td>
+        <td class="id">001</td>
+        <td class="name">
+          <div class="contact_photo">
+            <img src="" alt="" />
+          </div>
+          <label>Ilkin Mamedov</label>
+        </td>
+        <td class="age">7</td>
+        <td class="gender">Male</td>
+        <td class="disease">Allergie</td>
+        <td class="treatment">30%</td>
+        <td class="address">Hannover</td>
+        <td class="phone">+3 146 45 454 54</td>
+        <td class="options"><i class="icon-angle-down"></i></td>
+      </tr>
+    </template>
+
+    <div class="app">
+      <nav class="navbar">
+        <div class="nav_header">
+          <div class="logo">
+            <a href="#">
+              <img src="images/logo.png" width="20px" alt="" />
+            </a>
+            <span>Docare</span>
+          </div>
+          <div class="icon-bars"></div>
+        </div>
+
+        <div class="nav_menu">
+          <p>MAIN MENU</p>
+          <ul>
+            <li>
+              <button><i class="icon-home"></i><span>Home</span></button>
+            </li>
+
+            <li>
+              <button>
+                <i class="icon-user-plus"></i><span>Patient</span>
+              </button>
+            </li>
+
+            <li>
+              <button>
+                <i class="icon-envelope-o"></i><span>Mesages</span>
+              </button>
+            </li>
+
+            <li>
+              <button>
+                <i class="icon-linode"></i><span>Mediacation</span>
+              </button>
+            </li>
+
+            <li>
+              <button><i class="icon-lab"></i><span>Lab tests</span></button>
+            </li>
+
+            <li>
+              <button><i class="icon-file-o"></i><span>Documents</span></button>
+            </li>
+
+            <li>
+              <button><i class="icon-list-alt"></i><span>Shedule</span></button>
+            </li>
+
+            <li>
+              <button><i class="icon-history"></i><span>History</span></button>
+            </li>
+            <li>
+              <button>
+                <i class="icon-comments"></i><span>Community</span>
+              </button>
+            </li>
+            <li>
+              <button>
+                <i class="icon-question-circle"></i><span>Help</span>
+              </button>
+            </li>
+            <li>
+              <button><i class="icon-cog"></i><span>Setting</span></button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bild">
+          <div class="bild_content">
+            <div class="img">
+              <img src="images/app.png" width="70px" alt="" />
+            </div>
+            <div>Download the app</div>
+            <div>to stay up to date</div>
+
+            <button class="download">Download</button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="main">
+        <header class="top_header">
+          <button class="icon-search"></button>
+          <div class="contact_info">
+            <button class="icon-bell"></button>
+            <div class="logged_in">
+              <div class="contact_photo">
+                <img src="images/GYVC2191.JPG" alt="" />
+              </div>
+              <div class="hello">Hello, <span>Ikin!</span></div>
+              <div class="logout"><a href="#">Log Out</a></div>
+            </div>
+            <div class="logged_out">
+              <div class="contact_photo">
+                <img src="images/logo.png" alt="" />
+              </div>
+              <div class="hello">Hello, <span>Guest!</span></div>
+              <div class="login"><a href="#">Log In</a></div>
+              <div class="register"><a href="#">Register</a></div>
+            </div>
+          </div>
+        </header>
+
+        <div class="page_header">
+          <div class="patients">
+            <div>Patients</div>
+            <button class="left-radius icon-move-down"></button>
+            <button class="right-radius icon-move-up"></button>
+          </div>
+
+          <div class="page_info">
+            <div class="quantity"><span></span> patients</div>
+            <button class="left icon-angle-left"></button>
+            <button class="cur_page">1</button>
+            <button class="right icon-angle-right"></button>
+            <div class="of_pages">of <span>1</span> pages</div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="container_header">
+            <div class="left_group">
+              <button class="icon-navicon"></button>
+              <button class="icon-th-large-outline"></button>
+              <div class="search">
+                <button class="icon-search"></button>
+                <input placeholder="Search" type="text" />
+              </div>
+              <div class="sort">
+                <label for="sortBy">Sort by:</label>
+                <select>
+                  <option value=""></option>
+                  <option value="id">Id</option>
+                  <option value="name">Name</option>
+                  <option value="age">Age</option>
+                  <option value="gender">Gender</option>
+                  <option value="disease">Disease</option>
+                  <option value="treatment">Treatment</option>
+                  <option value="address">Address</option>
+                  <option value="phone">Phone</option>
+                </select>
+                <button class="icon-angle-down"></button>
+              </div>
+              <button class="icon-filter"></button>
+            </div>
+            <button class="del_btn">Delete</button>
+            <button class="add_btn">
+              <i class="icon-plus"></i>
+              Add patients
+            </button>
+          </div>
+
+          <div class="content">
+            <div class="list">
+              <table class="table">
+                <tbody>
+                  <tr class="header">
+                    <th><input type="checkbox" /></th>
+                    <th class="id">ID</th>
+                    <th><button class="name_btn">Name</button></th>
+                    <th><button class="age_btn">Age</button></th>
+                    <th>Gender</th>
+                    <th>Disease</th>
+                    <th><button class="treatment_btn">Treatment</button></th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th><i class="icon-angle-down"></i></th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="patient_container">
+        <div class="fon"></div>
+        <div class="add_patient">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th><input data-key="name" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Age</th>
+                <th><input data-key="age" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Gender</th>
+                <th><input data-key="gender" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Disease</th>
+                <th><input data-key="disease" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Treatment</th>
+                <th><input data-key="treatment" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <th><input data-key="address" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <th><input data-key="phone" type="text" /></th>
+              </tr>
+            </tbody>
+          </table>
+          <button class="save">Save</button>
+        </div>
+      </div>
+
+      <div class="login_container">
+        <div class="fon"></div>
+        <div class="log_doctor">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Email</th>
+                <th><input data-key="email" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Password</th>
+                <th><input data-key="password" type="password" /></th>
+              </tr>
+            </tbody>
+          </table>
+          <p class="error">not correct!</p>
+          <button class="save_login">Log In</button>
+        </div>
+      </div>
+      <!-- coment -->
+      <div class="register_container">
+        <div class="fon"></div>
+        <div class="reg_doctor">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Email</th>
+                <th><input data-key="email" type="text" /></th>
+              </tr>
+              <tr>
+                <th>Password</th>
+                <th><input data-key="password" type="password" /></th>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <th><input data-key="name" type="text" /></th>
+              </tr>
+            </tbody>
+          </table>
+          <p class="error">not correct!</p>
+          <button class="save_register">Register</button>
+        </div>
+      </div>
+    </div>
+    <script src="docare.js"></script>
+  </body>
+</html>

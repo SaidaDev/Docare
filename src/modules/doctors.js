@@ -1,61 +1,68 @@
-import fs from 'fs'
+import fs from "fs"
 import { getRandomString } from "./utilities"
 
 let doctors = []
 
 const saveDoctors = () => {
-    fs.writeFileSync('doctors.json', JSON.stringify(doctors, null, 2))
+  if (process.env.NOFS !== undefined) {
+    return
+  }
+  fs.writeFileSync("src/doctors.json", JSON.stringify(doctors, null, 2))
 }
 export const loadDoctors = () => {
-    doctors = JSON.parse(fs.readFileSync('doctors.json'))
+  if (process.env.NOFS !== undefined) {
+
+    return
+  }
+  doctors = JSON.parse(fs.readFileSync("src/doctors.json"))
 }
 
 export const getDocById = (docId) => {
-    for (let i = 0; i < doctors.length; i++) {
-        if (doctors[i].id === docId) {
-            return doctors[i]
-        }
+  for (let i = 0; i < doctors.length; i++) {
+    if (doctors[i].id === docId) {
+      return doctors[i]
     }
-    return null
+  }
+  return null
 }
 
 export const findDoc = (email, pass) => {
-    for (let i = 0; i < doctors.length; i++) {
-        if (doctors[i].email === email && doctors[i].password === pass) {
-            return {
-                id: doctors[i].id,
-                name: doctors[i].name,
-                image: doctors[i].image
-            }
-        }
+  for (let i = 0; i < doctors.length; i++) {
+    if (doctors[i].email === email && doctors[i].password === pass) {
+      return {
+        id: doctors[i].id,
+        name: doctors[i].name,
+        image: doctors[i].image,
+      }
     }
-    return null
+  }
+  return null
 }
 
 const doesEmailExists = (email) => {
-    for (let i = 0; i < doctors.length; i++) {
-        if (doctors[i].email === email) {
-            return true
-        }
+  for (let i = 0; i < doctors.length; i++) {
+    if (doctors[i].email === email) {
+      return true
     }
-    return false
+  }
+  return false
 }
 export const addDoctor = (email, password, name) => {
-    if (doesEmailExists(email)) {
-        return null
-    }
-    const newdoc = {
-        id: getRandomString(),
-        name: name,
-        email: email,
-        image: 'images/GYVC2191.JPG',
-        password: password
-    }
-    doctors.push(newdoc)
-    saveDoctors()
-    return {
-        id: newdoc.id,
-        name: newdoc.name,
-        image: newdoc.image
-    }
+  if (doesEmailExists(email)) {
+    return null
+  }
+  const newdoc = {
+    id: getRandomString(),
+    name: name,
+    email: email,
+    image: "images/GYVC2191.JPG",
+    password: password,
+  }
+  doctors.push(newdoc)
+  saveDoctors()
+  return {
+    id: newdoc.id,
+    name: newdoc.name,
+    image: newdoc.image,
+  }
 }
